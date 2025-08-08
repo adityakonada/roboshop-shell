@@ -40,11 +40,11 @@ dnf install mongodb-org -y &>> LOG_FILE
  
 VALIDATE $? "Installation of monngo db server"
 
-systemctl enable mongod -y &>> LOG_FILE
+systemctl enable mongod &>> LOG_FILE
  
 VALIDATE $? "Enabling mongodb"
 
-systemctl start mongod -y &>> LOG_FILE
+systemctl start mongod &>> LOG_FILE
  
 VALIDATE $? "Starting mongodb"
 
@@ -52,6 +52,6 @@ sed -e 's/127.0.0.1/0.0.0.0' /etc/mongod.conf
 
 VALIDATE $? "replacing 0.0.0.0"
 
-systemctl restart mongod -y &>> LOG_FILE
+systemctl restart mongod &>> LOG_FILE
  
 VALIDATE $? "Restarting mongodb"
