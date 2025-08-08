@@ -31,21 +31,27 @@ else
      echo -e "$G You are Root user $N"
 fi 
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo 
+cp mongo.repo /etc/yum.repos.d/mongo.repo &>> LOG_FILE
 # firstly open a new file-mongo.repo in folder, copy the content
 #Now command explanation --> copying a file mongo.repo to /etc/yum.repos.d/mongo.repo (copying as same name mongo.repo - last word in cmd)
+VALIDATE $? "Copying mongo.repo"
+
 dnf install mongodb-org -y &>> LOG_FILE
  
 VALIDATE $? "Installation of monngo db server"
 
 systemctl enable mongod -y &>> LOG_FILE
  
- VALIDATE $? "Enabling mongodb"
+VALIDATE $? "Enabling mongodb"
 
- systemctl start mongod -y &>> LOG_FILE
+systemctl start mongod -y &>> LOG_FILE
  
- VALIDATE $? "Starting mongodb"
+VALIDATE $? "Starting mongodb"
 
- sed -e 's/127.0.0.1/0.0.0.0' /etc/mongod.conf
+sed -e 's/127.0.0.1/0.0.0.0' /etc/mongod.conf
 
- VALIDATE $? "replacing 0.0.0.0"
+VALIDATE $? "replacing 0.0.0.0"
+
+systemctl restart mongod -y &>> LOG_FILE
+ 
+VALIDATE $? "Restarting mongodb"
