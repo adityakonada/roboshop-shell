@@ -43,14 +43,14 @@ dnf install nodejs -y &>> $LOG_FILE
 
 VALIDATE $? "Installing nodejs"
 
-useradd roboshop &>> $LOG_FILE
+id roboshop #if roboshop user does not exist, then it is failure
 if [ $? -ne 0 ]
 then 
-    userdd roboshop
+    userdd roboshop &>>LOG_FILE
+    VALIDATE $? "roboshop user creation"
 else
     echo -e "roboshop user already exists.. so $Y Skipping $N"
 fi 
-
 
 mkdir -p /app &>> $LOG_FILE #The -p option stands for "parents"No error if the target directory already exists.
 
