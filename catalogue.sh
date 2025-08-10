@@ -44,10 +44,15 @@ dnf install nodejs -y &>> $LOG_FILE
 VALIDATE $? "Installing nodejs"
 
 useradd roboshop &>> $LOG_FILE
+if [ $? -ne 0 ]
+then 
+    userdd roboshop
+else
+    echo -e "roboshop user already exists.. so $Y Skipping $N"
+fi 
 
-VALIDATE $? " adding roboshop user"
 
-mkdir /app &>> $LOG_FILE
+mkdir -p /app &>> $LOG_FILE #The -p option stands for "parents"No error if the target directory already exists.
 
 VALIDATE $? "creating app directory"
 
@@ -71,7 +76,7 @@ npm install &>> $LOG_FILE
 
 VALIDATE $? "installing npm dependencies"
 
-cp catalogue.service /etc/systemd/system/catalogue.service &>> $LOG_FILE
+cp /home/centos/roboshop-shell/catalogue.service /etc/systemd/system/catalogue.service &>> $LOG_FILE
 
 VALIDATE $? "copying catalogue.service"
 
