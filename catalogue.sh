@@ -64,7 +64,7 @@ cd /app &>> $LOG_FILE
 
 VALIDATE $? " cd app"
 
-unzip /tmp/catalogue.zip &>> $LOG_FILE #-o means overwrite
+unzip -o /tmp/catalogue.zip &>> $LOG_FILE #-o means overwrite, so that no error occurs. already error came for me. 
 
 VALIDATE $? "unzipping catalogue.zip"
 
