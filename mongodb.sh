@@ -14,10 +14,10 @@ echo "Script started executing at $TIMESTAMP" &>> $LOG_FILE # &>> is rediction c
 VALIDATE(){
     if [ $1 -ne 0 ]
     then
-        echo -e "$2 installation $R error $N"
+        echo -e "$2 ..... $R error $N"
         exit 1
     else
-        echo -e "$2 installation $G success $N"
+        echo -e "$2 ...... $G success $N"
     fi
 }
 
@@ -31,6 +31,27 @@ else
      echo -e "$G You are Root user $N"
 fi 
 
-dnf install mongodb-org -y &>> LOG_FILE
+cp mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOG_FILE
+# firstly open a new file-mongo.repo in folder, copy the content
+#Now command explanation --> copying a file mongo.repo to /etc/yum.repos.d/mongo.repo (copying as same name mongo.repo - last word in cmd)
+VALIDATE $? "Copying mongo.repo"
+
+dnf install mongodb-org -y &>> $LOG_FILE
  
-VALIDATE $? "Mongodb"
+VALIDATE $? "Installation of monngo db server"
+
+systemctl enable mongod &>> $LOG_FILE
+ 
+VALIDATE $? "Enabling mongodb"
+
+systemctl start mongod &>> $LOG_FILE
+ 
+VALIDATE $? "Starting mongodb"
+
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf &>> $LOG_FILE
+
+VALIDATE $? "replacing 0.0.0.0"
+
+systemctl restart mongod &>> $LOG_FILE
+ 
+VALIDATE $? "Restarting mongodb"
