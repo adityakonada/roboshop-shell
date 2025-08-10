@@ -64,7 +64,7 @@ cd /app &>> $LOG_FILE
 
 VALIDATE $? " cd app"
 
-unzip /tmp/catalogue.zip &>> $LOG_FILE
+unzip /tmp/catalogue.zip &>> $LOG_FILE #-o means overwrite
 
 VALIDATE $? "unzipping catalogue.zip"
 
