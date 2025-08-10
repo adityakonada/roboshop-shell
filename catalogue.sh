@@ -92,7 +92,7 @@ systemctl start catalogue &>> $LOG_FILE
 
 VALIDATE $? "starting catalogue" 
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOG_FILE
+cp /home/centos/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOG_FILE #cp log of mongo.repo(we just created as another file) to req place(given in documentation) to make things work
 
 VALIDATE $? "copying mongo.repo" 
 
