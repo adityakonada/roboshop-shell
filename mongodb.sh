@@ -31,14 +31,14 @@ else
      echo -e "$G You are Root user $N"
 fi 
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOG_FILE
+cp /home/centos/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOG_FILE
 # firstly open a new file-mongo.repo in folder, copy the content
 #Now command explanation --> copying a file mongo.repo to /etc/yum.repos.d/mongo.repo (copying as same name mongo.repo - last word in cmd)
 VALIDATE $? "Copying mongo.repo"
 
 dnf install mongodb-org -y &>> $LOG_FILE
  
-VALIDATE $? "Installation of monngo db server"
+VALIDATE $? "Installation of mongodb server"
 
 systemctl enable mongod &>> $LOG_FILE
  

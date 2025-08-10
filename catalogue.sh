@@ -92,7 +92,7 @@ systemctl start catalogue &>> $LOG_FILE
 
 VALIDATE $? "starting catalogue" 
 
-cp /home/centos/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOG_FILE #cp log of mongo.repo(we just created as another file) to req place(given in documentation) to make things work
+cp /home/centos/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOG_FILE #cp log of mongo.repo(we just created as another file) to req place(given in documentation to make things work
 
 VALIDATE $? "copying mongo.repo" 
 
@@ -102,4 +102,4 @@ VALIDATE $? "installing mongodb server client"
 
 mongo --host mongodb.adityakonada.site </app/schema/catalogue.js &>> $LOG_FILE
 
-VALIDATE $? "loading schema - default products" 
+VALIDATE $? "loading schema -loading catalouge data into mongodb default products" 
