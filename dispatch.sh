@@ -31,38 +31,37 @@ else
      echo -e "$G You are Root user $N"
 fi 
 
-dnf install nginx -y &>> $LOG_FILE
+dnf install golang -y
 
-VALIDATE $? "Installing Nginx"
+id roboshop #if roboshop user does not exist, then it is failure
+if [ $? -ne 0 ]
+then
+    useradd roboshop
+    VALIDATE $? "roboshop user creation"
+else
+    echo -e "roboshop user already exist $Y SKIPPING $N"
+fi
 
-systemctl enable nginx &>> $LOG_FILE
+mkdir -p /app 
 
-VALIDATE $? "enabling Nginx"
+curl -L -o /tmp/dispatch.zip https://roboshop-builds.s3.amazonaws.com/dispatch.zip
 
-systemctl start nginx &>> $LOG_FILE
+cd /app 
 
-VALIDATE $? "starting Nginx"
+unzip /tmp/dispatch.zip
 
-rm -rf /usr/share/nginx/html/* &>> $LOG_FILE
+cd /app 
 
-VALIDATE $? "deleting default page"
+go mod init dispatch
 
-curl -o /tmp/web.zip https://roboshop-builds.s3.amazonaws.com/web.zip &>> $LOG_FILE
+go get 
 
-VALIDATE $? "downloading roboshop webpage"
+go build
 
-cd /usr/share/nginx/html &>> $LOG_FILE
+cp /home/centos/roboshop-shell/dispatch.service /etc/systemd/system/dispatch.service
 
-VALIDATE $? "cd nginx/html"
+systemctl daemon-reload
 
-unzip -o /tmp/web.zip &>> $LOG_FILE
+systemctl enable dispatch 
 
-VALIDATE $? "unzipping"
-
-cp /home/centos/roboshop-shell/roboshop.conf /etc/nginx/default.d/roboshop.conf &>> $LOG_FILE
-
-VALIDATE $? "copying config file"
-
-systemctl restart nginx &>> $LOG_FILE
-
-VALIDATE $? "restarting Nginx"
+systemctl start dispatch

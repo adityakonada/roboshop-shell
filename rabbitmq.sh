@@ -31,38 +31,30 @@ else
      echo -e "$G You are Root user $N"
 fi 
 
-dnf install nginx -y &>> $LOG_FILE
+curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash &>> $LOGFILE
 
-VALIDATE $? "Installing Nginx"
+VALIDATE $? "Downloading erlang script"
 
-systemctl enable nginx &>> $LOG_FILE
+curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | bash &>> $LOGFILE
 
-VALIDATE $? "enabling Nginx"
+VALIDATE $? "Downloading rabbitmq script"
 
-systemctl start nginx &>> $LOG_FILE
+dnf install rabbitmq-server -y  &>> $LOGFILE
 
-VALIDATE $? "starting Nginx"
+VALIDATE $? "Installing RabbitMQ server"
 
-rm -rf /usr/share/nginx/html/* &>> $LOG_FILE
+systemctl enable rabbitmq-server &>> $LOGFILE
 
-VALIDATE $? "deleting default page"
+VALIDATE $? "Enabling rabbitmq server"
 
-curl -o /tmp/web.zip https://roboshop-builds.s3.amazonaws.com/web.zip &>> $LOG_FILE
+systemctl start rabbitmq-server  &>> $LOGFILE
 
-VALIDATE $? "downloading roboshop webpage"
+VALIDATE $? "Starting rabbitmq server"
 
-cd /usr/share/nginx/html &>> $LOG_FILE
+rabbitmqctl add_user roboshop roboshop123 &>> $LOGFILE
 
-VALIDATE $? "cd nginx/html"
+VALIDATE $? "creating user"
 
-unzip -o /tmp/web.zip &>> $LOG_FILE
+rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> $LOGFILE
 
-VALIDATE $? "unzipping"
-
-cp /home/centos/roboshop-shell/roboshop.conf /etc/nginx/default.d/roboshop.conf &>> $LOG_FILE
-
-VALIDATE $? "copying config file"
-
-systemctl restart nginx &>> $LOG_FILE
-
-VALIDATE $? "restarting Nginx"
+VALIDATE $? "setting permission"

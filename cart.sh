@@ -33,7 +33,7 @@ fi
 
 dnf module disable nodejs -y &>> $LOG_FILE
 
-VALIDATE $? "disabling nodejs"
+VALIDATE $? "disabling current nodejs"
 
 dnf module enable nodejs:18 -y &>> $LOG_FILE
 
@@ -56,17 +56,17 @@ mkdir -p /app &>> $LOG_FILE #The -p option stands for "parents"No error if the t
 
 VALIDATE $? "creating app directory"
 
-curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zip &>> $LOG_FILE
+curl -L -o /tmp/cart.zip https://roboshop-builds.s3.amazonaws.com/cart.zip &>> $LOG_FILE
 
-VALIDATE $? "downloading catalogue application zip file"
+VALIDATE $? "downloading cart application zip file"
 
 cd /app &>> $LOG_FILE
 
 VALIDATE $? " cd app"
 
-unzip -o /tmp/catalogue.zip &>> $LOG_FILE #-o means overwrite, so that no error occurs. already error came for me. 
+unzip -o /tmp/cart.zip &>> $LOG_FILE #-o means overwrite, so that no error occurs. already error came for me. 
 
-VALIDATE $? "unzipping catalogue.zip"
+VALIDATE $? "unzipping cart.zip application"
 
 cd /app &>> $LOG_FILE
 
@@ -76,24 +76,24 @@ npm install &>> $LOG_FILE
 
 VALIDATE $? "installing npm dependencies"
 #right now we are in cd /app, does it contain 
-#cp catalogue.service file? NO! 
+#cp cart.service file? NO! 
 #as we created another file in vsc, copied the content into it, we are giving the absolute path ( read command properly)
-#we are using absolute path becuase catalogue.service exists there. 
-cp /home/centos/roboshop-shell/catalogue.service /etc/systemd/system/catalogue.service &>> $LOG_FILE
+#we are using absolute path becuase cart.service exists there. 
+cp /home/centos/roboshop-shell/cart.service /etc/systemd/system/cart.service &>> $LOG_FILE
 
-VALIDATE $? "copying catalogue.service file"
+VALIDATE $? "copying cart service file"
 
 systemctl daemon-reload &>> $LOG_FILE
 
 VALIDATE $? "daemon reloading"
 
-systemctl enable catalogue &>> $LOG_FILE #catalogue is customized service, so no -default/inbuilt service i.e. systemctl enable catalogue
+systemctl enable cart &>> $LOG_FILE
 
-VALIDATE $? "enabling catalogue"
+VALIDATE $? "enabling cart" #cart is customized service, so no -default/inbuilt service i.e. systemctl enable cart
 
-systemctl start catalogue &>> $LOG_FILE
+systemctl start cart &>> $LOG_FILE
 
-VALIDATE $? "starting catalogue" 
+VALIDATE $? "starting cart" 
 
 cp /home/centos/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOG_FILE #cp log of mongo.repo(we just created as another file) to req place(given in documentation to make things work
 
@@ -103,6 +103,6 @@ dnf install mongodb-org-shell -y&>> $LOG_FILE
 
 VALIDATE $? "installing mongodb server client" 
 
-mongo --host mongodb.adityakonada.site </app/schema/catalogue.js &>> $LOG_FILE
+mongo --host mongodb.adityakonada.site </app/schema/cart.js &>> $LOG_FILE
 
-VALIDATE $? "loading schema -loading catalouge data into mongodb default products" 
+VALIDATE $? "loading schema -loading default cart data into mongodb" 

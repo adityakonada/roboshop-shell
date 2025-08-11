@@ -31,38 +31,26 @@ else
      echo -e "$G You are Root user $N"
 fi 
 
-dnf install nginx -y &>> $LOG_FILE
+dnf module disable mysql -y &>> $LOG_FILE
 
-VALIDATE $? "Installing Nginx"
+VALIDATE $? "disabling mysql"
 
-systemctl enable nginx &>> $LOG_FILE
+cp mysql.repo /etc/yum.repos.d/mysql.repo &>> $LOG_FILE
 
-VALIDATE $? "enabling Nginx"
+VALIDATE $? "copying mysql.repo file"
 
-systemctl start nginx &>> $LOG_FILE
+dnf install mysql-community-server -y &>> $LOG_FILE
 
-VALIDATE $? "starting Nginx"
+VALIDATE $? "installing mysql-community-server"
 
-rm -rf /usr/share/nginx/html/* &>> $LOG_FILE
+systemctl enable mysqld &>> $LOG_FILE
 
-VALIDATE $? "deleting default page"
+VALIDATE $? "enabling mysql"
 
-curl -o /tmp/web.zip https://roboshop-builds.s3.amazonaws.com/web.zip &>> $LOG_FILE
+systemctl start mysqld &>> $LOG_FILE
 
-VALIDATE $? "downloading roboshop webpage"
+VALIDATE $? "starting mysql"
+ 
+mysql_secure_installation --set-root-pass RoboShop@1 &>> $LOG_FILE
 
-cd /usr/share/nginx/html &>> $LOG_FILE
-
-VALIDATE $? "cd nginx/html"
-
-unzip -o /tmp/web.zip &>> $LOG_FILE
-
-VALIDATE $? "unzipping"
-
-cp /home/centos/roboshop-shell/roboshop.conf /etc/nginx/default.d/roboshop.conf &>> $LOG_FILE
-
-VALIDATE $? "copying config file"
-
-systemctl restart nginx &>> $LOG_FILE
-
-VALIDATE $? "restarting Nginx"
+VALIDATE $? "setting root password"

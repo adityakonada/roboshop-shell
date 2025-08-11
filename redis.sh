@@ -31,38 +31,26 @@ else
      echo -e "$G You are Root user $N"
 fi 
 
-dnf install nginx -y &>> $LOG_FILE
+dnf install https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y &>>$LOG_FILE
 
-VALIDATE $? "Installing Nginx"
+VALIDATE $? "installing remi release"
 
-systemctl enable nginx &>> $LOG_FILE
+dnf module enable redis:remi-6.2 -y &>>$LOG_FILE
 
-VALIDATE $? "enabling Nginx"
+VALIDATE $? "enabling redis: remi - 6.2"
 
-systemctl start nginx &>> $LOG_FILE
+dnf install redis -y &>>$LOG_FILE
 
-VALIDATE $? "starting Nginx"
+VALIDATE $? "installing redis"
 
-rm -rf /usr/share/nginx/html/* &>> $LOG_FILE
+sed -i "s/127.0.0.1/0.0.0.0/g" /etc/redis/redis.conf &>>$LOG_FILE
 
-VALIDATE $? "deleting default page"
+VALIDATE $? "replacing with 0.0.0.0"
 
-curl -o /tmp/web.zip https://roboshop-builds.s3.amazonaws.com/web.zip &>> $LOG_FILE
+systemctl enable redis &>>$LOG_FILE
 
-VALIDATE $? "downloading roboshop webpage"
+VALIDATE $? "enabling redis"
 
-cd /usr/share/nginx/html &>> $LOG_FILE
+systemctl start redis &>>$LOG_FILE
 
-VALIDATE $? "cd nginx/html"
-
-unzip -o /tmp/web.zip &>> $LOG_FILE
-
-VALIDATE $? "unzipping"
-
-cp /home/centos/roboshop-shell/roboshop.conf /etc/nginx/default.d/roboshop.conf &>> $LOG_FILE
-
-VALIDATE $? "copying config file"
-
-systemctl restart nginx &>> $LOG_FILE
-
-VALIDATE $? "restarting Nginx"
+VALIDATE $? "starting redis"
