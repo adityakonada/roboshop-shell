@@ -93,7 +93,7 @@ dnf install mysql -y &>> $LOG_FILE
 
 VALIDATE $? " installing mysql client "
 
-mkdir -p/app/schema
+mkdir -p /app/schema
 
 curl -L -o /app/schema/shipping.sql https://roboshop-builds.s3.amazonaws.com/shipping.sql &>> $LOG_FILE
 
