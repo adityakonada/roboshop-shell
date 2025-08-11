@@ -45,10 +45,10 @@ else
 fi 
 
 
-mkdir -p /app/db &>> $LOG_FILE
+mkdir -p /app &>> $LOG_FILE
 VALIDATE $? " creating app/db directory"
 
-curl -L -o /app/db/shipping.sql https://raw.githubusercontent.com/roboshop-devops-project/roboshop-sql/main/shipping.sql &>> $LOG_FILE
+curl -L -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip  &>> $LOG_FILE
 
 
 VALIDATE $? " downloading shipping application - shipping.zip"
@@ -77,6 +77,12 @@ cp /home/centos/roboshop-shell/shipping.service /etc/systemd/system/shipping.ser
 
 VALIDATE $? " copying shipping service"
 
+curl -L -o /app/db/shipping.sql https://raw.githubusercontent.com/roboshop-devops-project/roboshop-sql/main/shipping.sql &>> $LOG_FILE
+
+VALIDATE $? "downloading shipping schema.sql"
+
+chown -R roboshop:roboshop /app
+
 systemctl daemon-reload &>> $LOG_FILE
 
 VALIDATE $? " daemon reloading"
@@ -93,9 +99,10 @@ dnf install mysql -y &>> $LOG_FILE
 
 VALIDATE $? " installing mysql client "
 
-mysql -h mysql.adityakonada.site -uroot -pRoboShop@1 < /app/db/shipping.sql #after 2 hours of dedication, found the loc of schema.sql. in daws76s, this line wrongly written. (used the combo of 84s - did not copy entirely )
+mysql -h mysql.adityakonada.site -uroot -pRoboShop@1 < /app/db/shipping.sql &>> $LOG_FILE
 
-VALIDATE $? " loading shipping data"
+VALIDATE $? "loading shipping schema into MySQL" #after 2 hours of dedication, found the loc of schema.sql. in daws76s, this line wrongly written. (used the combo of 84s - did not copy entirely )
+
 
 systemctl restart shipping &>> $LOG_FILE
 
