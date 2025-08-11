@@ -95,7 +95,7 @@ VALIDATE $? " installing mysql client "
 
 mkdir -p /app/schema
 
-curl -L -o /app/schema/shipping.sql https://roboshop-builds.s3.amazonaws.com/shipping.sql &>> $LOG_FILE
+curl -L -o /app/schema/shipping.sql \  https://roboshop-artifacts.s3.amazonaws.com/shipping.sql&>> $LOG_FILE
 
 VALIDATE $? "chatgpt help - downloading schema"
 
