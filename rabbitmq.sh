@@ -31,30 +31,30 @@ else
      echo -e "$G You are Root user $N"
 fi 
 
-curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash &>> $LOGFILE
+curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash &>> $LOG_FILE
 
 VALIDATE $? "Downloading erlang script"
 
-curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | bash &>> $LOGFILE
+curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | bash &>> $LOG_FILE
 
 VALIDATE $? "Downloading rabbitmq script"
 
-dnf install rabbitmq-server -y  &>> $LOGFILE
+dnf install rabbitmq-server -y  &>> $LOG_FILE
 
 VALIDATE $? "Installing RabbitMQ server"
 
-systemctl enable rabbitmq-server &>> $LOGFILE
+systemctl enable rabbitmq-server &>> $LOG_FILE
 
 VALIDATE $? "Enabling rabbitmq server"
 
-systemctl start rabbitmq-server  &>> $LOGFILE
+systemctl start rabbitmq-server  &>> $LOG_FILE
 
 VALIDATE $? "Starting rabbitmq server"
 
-rabbitmqctl add_user roboshop roboshop123 &>> $LOGFILE
+rabbitmqctl add_user roboshop roboshop123 &>> $LOG_FILE
 
 VALIDATE $? "creating user"
 
-rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> $LOGFILE
+rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> $LOG_FILE
 
 VALIDATE $? "setting permission"
