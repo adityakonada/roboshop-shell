@@ -57,7 +57,7 @@ cd /app &>> $LOG_FILE
 
 VALIDATE $? " cd app"
 
-unzip /tmp/shipping.zip &>> $LOG_FILE
+unzip -o /tmp/shipping.zip &>> $LOG_FILE
 
 VALIDATE $? " unzipping shipping.zip"
 
