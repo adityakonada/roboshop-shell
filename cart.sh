@@ -94,15 +94,3 @@ VALIDATE $? "enabling cart" #cart is customized service, so no -default/inbuilt 
 systemctl start cart &>> $LOG_FILE
 
 VALIDATE $? "starting cart" 
-
-cp /home/centos/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOG_FILE #cp log of mongo.repo(we just created as another file) to req place(given in documentation to make things work
-
-VALIDATE $? "copying mongo.repo" 
-
-dnf install mongodb-org-shell -y&>> $LOG_FILE
-
-VALIDATE $? "installing mongodb server client" 
-
-mongo --host mongodb.adityakonada.site </app/schema/cart.js &>> $LOG_FILE
-
-VALIDATE $? "loading schema -loading default cart data into mongodb" 
