@@ -38,7 +38,7 @@ VALIDATE $? "installing maven"
 id roboshop #if roboshop user does not exist, then it is failure
 if [ $? -ne 0 ]
 then 
-    useradd roboshop &>>LOG_FILE
+    useradd roboshop &>>$LOG_FILE
     VALIDATE $? "roboshop user creation"
 else
     echo -e "roboshop user already exists.. so $Y Skipping $N"
