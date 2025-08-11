@@ -85,7 +85,7 @@ dnf install mysql -y &>> "$LOG_FILE"
 VALIDATE $? "Installing mysql client"
 
 # Load shipping schema into MySQL
-mysql -h mysql.adityakonada.site -uroot -pRoboShop@1 < /app/db/shipping.sql &>> "$LOG_FILE"
+mysql -h mysql.adityakonada.site -uroot -pRoboShop@1 < /app/db/shipping.sql 
 VALIDATE $? "Loading shipping schema into MySQL"
 
 systemctl restart shipping &>> "$LOG_FILE"
