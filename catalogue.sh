@@ -46,7 +46,7 @@ VALIDATE $? "Installing nodejs"
 id roboshop #if roboshop user does not exist, then it is failure
 if [ $? -ne 0 ]
 then 
-    userdd roboshop &>>LOG_FILE
+    userdd roboshop 
     VALIDATE $? "roboshop user creation"
 else
     echo -e "roboshop user already exists.. so $Y Skipping $N"
