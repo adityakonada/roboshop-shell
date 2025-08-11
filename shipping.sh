@@ -31,7 +31,9 @@ else
      echo -e "$G You are Root user $N"
 fi 
 
-dnf install maven -y
+dnf install maven -y &>> $LOG_FILE
+
+VALIDATE $? "installing maven"
 
 id roboshop #if roboshop user does not exist, then it is failure
 if [ $? -ne 0 ]
@@ -71,7 +73,7 @@ mv target/shipping-1.0.jar shipping.jar &>> $LOG_FILE
 
 VALIDATE $? " renaming jar file"
 
-cp home/centos/roboshop-shell/shipping.service /etc/systemd/system/shipping.service &>> $LOG_FILE
+cp home/centos/roboshop-shell/shipping.service /etc/systemd/system/shipping.service 
 
 VALIDATE $? " copying shipping service"
 
