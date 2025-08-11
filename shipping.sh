@@ -38,7 +38,7 @@ VALIDATE $? "installing maven"
 id roboshop  &>> $LOG_FILE #if roboshop user does not exist, then it is failure
 if [ $? -ne 0 ]
 then 
-    useradd roboshop 
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
     VALIDATE $? "roboshop user creation"
 else
     echo -e "roboshop user already exists.. so $Y Skipping $N"
@@ -49,7 +49,7 @@ mkdir -p /app &>> $LOG_FILE
 
 VALIDATE $? " creating app directory"
 
-curl -L -o /tmp/shipping.zip https://roboshop-builds.s3.amazonaws.com/shipping.zip &>> $LOG_FILE
+curl -L -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip  &>> $LOG_FILE
 
 VALIDATE $? " downloading shipping application - shipping.zip"
 
@@ -95,7 +95,7 @@ VALIDATE $? " installing mysql client "
 
 mkdir -p /app/schema
 
-curl -L -o /app/schema/shipping.sql \  https://roboshop-artifacts.s3.amazonaws.com/shipping.sql&>> $LOG_FILE
+curl -L -o /app/schema/shipping.sql \  https://roboshop-artifacts.s3.amazonaws.com/shipping.sql &>> $LOG_FILE
 
 VALIDATE $? "chatgpt help - downloading schema"
 
