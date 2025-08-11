@@ -73,7 +73,7 @@ mv target/shipping-1.0.jar shipping.jar &>> $LOG_FILE
 
 VALIDATE $? " renaming jar file"
 
-cp home/centos/roboshop-shell/shipping.service /etc/systemd/system/shipping.service 
+cp /home/centos/roboshop-shell/shipping.service /etc/systemd/system/shipping.service &>> $LOG_FILE
 
 VALIDATE $? " copying shipping service"
 
