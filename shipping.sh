@@ -93,11 +93,6 @@ dnf install mysql -y &>> $LOG_FILE
 
 VALIDATE $? " installing mysql client "
 
-mkdir -p /app/schema
-
-curl -L -o /app/schema/shipping.sql \  https://roboshop-artifacts.s3.amazonaws.com/shipping.sql &>> $LOG_FILE
-
-VALIDATE $? "chatgpt help - downloading schema"
 
 mysql -h mysql.adityakonada.site -uroot -pRoboShop@1 < /app/schema/shipping.sql 
 
