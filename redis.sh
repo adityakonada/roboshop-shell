@@ -31,7 +31,7 @@ else
      echo -e "$G You are Root user $N"
 fi 
 
-dnf install https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y 
+dnf install https://rpms.remirepo.net/enterprise/remi-release-8.8 rpm -y &>> $LOG_FILE #error in daws76s - add 8.8 
 
 VALIDATE $? "installing remi release"
 
