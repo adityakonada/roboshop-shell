@@ -45,11 +45,11 @@ else
 fi 
 
 
-mkdir -p /app &>> $LOG_FILE
+mkdir -p /app/db &>> $LOG_FILE
+VALIDATE $? " creating app/db directory"
 
-VALIDATE $? " creating app directory"
+curl -L -o /app/db/shipping.sql https://raw.githubusercontent.com/roboshop-devops-project/roboshop-sql/main/shipping.sql &>> $LOG_FILE
 
-curl -L -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip  &>> $LOG_FILE
 
 VALIDATE $? " downloading shipping application - shipping.zip"
 
