@@ -100,7 +100,7 @@ dnf install mysql -y &>> $LOG_FILE
 VALIDATE $? " installing mysql client "
 
 mysql -h mysql.adityakonada.site -uroot -pRoboShop@1 < /app/db/shipping.sql 
-VALIDATE $? "loading shipping schema into MySQL" #after 2 hours of dedication, found the loc of schema.sql. in daws76s, this line wrongly written. (used the combo of 84s - did not copy entirely )
+VALIDATE $? "loading shipping schema into MySQL"  #failed to load even after 3 hours of dedication, found the loc of schema.sql. in daws76s, this line wrongly written. (used the combo of 84s - did not copy entirely )
 
 
 systemctl restart shipping &>> $LOG_FILE
