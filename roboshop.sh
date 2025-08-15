@@ -1,9 +1,9 @@
 #!/bin/bash
 
-AMI=ami-0f3c7d07486cad139 #this keeps on changing
-SG_ID=sg-087e7afb3a936fce7 #replace with your SG ID
+AMI=ami-0b4f379183e5706b9 #this keeps on changing
+SG_ID=sg-060cc4f8d742c5a9e #replace with your SG ID
 INSTANCES=("mongodb" "redis" "mysql" "rabbitmq" "catalogue" "user" "cart" "shipping" "payment" "dispatch" "web")
-ZONE_ID=Z104317737D96UJVA7NEF # replace your zone ID
+ZONE_ID=Z06052533ER7D19715K92 # replace your zone ID
 DOMAIN_NAME="adityakonada.site"
 
 for i in "${INSTANCES[@]}"
@@ -12,10 +12,10 @@ do
     then
         INSTANCE_TYPE="t3.small"
     else
-        INSTANCE_TYPE="t2.micro"
+        INSTANCE_TYPE="t3.micro"
     fi
 
-    IP_ADDRESS=$(aws ec2 run-instances --image-id $AMI --instance-type $INSTANCE_TYPE --security-group-ids sg-087e7afb3a936fce7 --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$i}]" --query 'Instances[0].PrivateIpAddress' --output text)
+    IP_ADDRESS=$(aws ec2 run-instances --image-id $AMI --instance-type $INSTANCE_TYPE --security-group-ids $SG_ID --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$i}]" --query 'Instances[0].PrivateIpAddress' --output text)
     #--tag-specifications -->is for giving name to the created instance; #value is nothing but $i in line 9
     #--query 'Instances[0].PrivateIpAddress' --> fetches the private Ip adderess 
     #In instance 0 List; . = search privateIpaddress ;  --output text = prints the output (see notes)  
