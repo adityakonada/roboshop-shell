@@ -24,7 +24,7 @@ do
 
     #create R53 record, make sure you delete existing A-record (Dont delete NS & SOA records. )
     #below command found from google 
-    aws route53 change-resource-record-sets --quiet \
+    aws route53 change-resource-record-sets \
     --hosted-zone-id $ZONE_ID \
     --change-batch '
     {
